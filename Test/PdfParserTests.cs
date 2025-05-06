@@ -18,4 +18,11 @@ public class PdfParserTests
         var classGrades = _pdfParser.GetClassGradeFromPdf(@"C:\Users\Oliver\Downloads\Grades.pdf");
         Assert.NotNull(classGrades);
     }
+    
+    [Fact]
+    public void CreateDebugPdf()
+
+    {
+        _pdfParser.CreateDebugPdf(@"C:\Users\Oliver\Downloads\Grades.pdf", @"C:\Users\Oliver\Documents\DebugGrades.pdf");
+    }
 }
