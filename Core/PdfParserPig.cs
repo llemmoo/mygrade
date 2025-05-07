@@ -9,17 +9,17 @@ using UglyToad.PdfPig.Writer;
 
 namespace Core;
 
-public class PdfParser
+public class PdfParserPig
 {
     
-    public PdfParser()
+    public PdfParserPig()
     {
     }
 
     public List<ClassGrade> GetClassGradeFromPdf(string pdfPath)
     {
         List<ClassGrade> classGrades = [];
-        using (PdfDocument document = PdfDocument.Open(pdfPath))
+        using (UglyToad.PdfPig.PdfDocument document = UglyToad.PdfPig.PdfDocument.Open(pdfPath))
         {
             foreach (Page page in document.GetPages())
             {
@@ -56,7 +56,7 @@ public class PdfParser
     public void CreateDebugPdf(string inputPath, string outputPath)
     {
         var pageNumber = 1;
-        using (var document = PdfDocument.Open(inputPath))
+        using (var document = UglyToad.PdfPig.PdfDocument.Open(inputPath))
         {
             var builder = new PdfDocumentBuilder { };
             PdfDocumentBuilder.AddedFont font = builder.AddStandard14Font(Standard14Font.Helvetica);
