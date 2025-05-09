@@ -7,6 +7,11 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
+    <MudToggleIconButton @bind-Toggled="_isDarkMode" 
+                         Icon="@Icons.Material.Filled.LightMode" 
+                         Title="Off"
+                         ToggledIcon="@Icons.Material.Filled.DarkMode" 
+                         ToggledTitle="On" />    
     <MudMainContent>
         @Body
     </MudMainContent>
@@ -25,4 +30,9 @@
             StateHasChanged();
         }
     }
-}
+
+    private void HandleThemeButtonClick()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+}        
