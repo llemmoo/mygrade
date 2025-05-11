@@ -6,12 +6,17 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<MudLayout>
-    <MudToggleIconButton @bind-Toggled="_isDarkMode" 
-                         Icon="@Icons.Material.Filled.LightMode" 
-                         Title="Off"
-                         ToggledIcon="@Icons.Material.Filled.DarkMode" 
-                         ToggledTitle="On" />    
+<MudLayout >
+    <MudGrid Justify="Justify.FlexEnd">
+        <MudItem xs="1">
+            <MudToggleIconButton @bind-Toggled="_isDarkMode"
+                                 Icon="@Icons.Material.Filled.LightMode"
+                                 Title="Off"
+                                 ToggledIcon="@Icons.Material.Filled.DarkMode"
+                                 ToggledTitle="On"
+                                 Style="justify-self: flex-end"/>
+        </MudItem>
+    </MudGrid>
     <MudMainContent>
         @Body
     </MudMainContent>
