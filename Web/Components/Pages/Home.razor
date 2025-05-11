@@ -1,12 +1,9 @@
 ﻿@page "/"
 @using Web.Components.Forms
 
-<MudContainer MaxWidth="MaxWidth.Large" >
-    <MudPaper Elevation="2" MinHeight="60vh" MaxHeight="80vh" Width="100%">
-        <MudGrid Justify="Justify.Center">
-            <MudItem xs="12" Style="justify-items: center; ">
-                <FileUploadForm/>
-            </MudItem>
-        </MudGrid>
-    </MudPaper>
+<MudContainer MaxWidth="MaxWidth.Large" Style="height: 80vh; display: flex; justify-content: center;">
+    <MudStack Spacing="0" AlignItems="AlignItems.Center" Style="width:100%">
+        <MudText Typo="Typo.h2" >Welcome to MyGrade!</MudText>
+        <FileUploadForm />
+    </MudStack>
 </MudContainer>
