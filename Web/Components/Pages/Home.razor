@@ -11,10 +11,12 @@
 
 @code
 {
-    List<ClassGrade> parsedClassGradeResult = [];
+    private bool _manualMode = false;
+    private List<ClassGrade> _parsedClassGradeResult = [];
 
     private void HandleParsedClassGradeResultFromPdf(List<ClassGrade> classGrades)
     {
-        parsedClassGradeResult = classGrades;
+        _parsedClassGradeResult = classGrades;
     }
+    
 }
