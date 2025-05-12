@@ -10,11 +10,11 @@ namespace Core;
 
 public class PdfParser
 {
-    public List<ClassGrade> GetClassGradeFromPdf(string inputPath)
+    public List<ClassGrade> GetClassGradeFromPdf(Stream pdfStream)
     {
         List<ClassGrade> classGrades = [];
         var pageNumber = 1;
-        using (var document = PdfDocument.Open(inputPath))
+        using (var document = PdfDocument.Open(pdfStream))
         {
             var builder = new PdfDocumentBuilder { };
             PdfDocumentBuilder.AddedFont font = builder.AddStandard14Font(Standard14Font.Helvetica);

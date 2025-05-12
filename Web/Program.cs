@@ -1,3 +1,4 @@
+using Core;
 using MudBlazor.Services;
 using Web.Components;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddMudServices();
+builder.Services.AddScoped<PdfParser>();
 
 
 var app = builder.Build();

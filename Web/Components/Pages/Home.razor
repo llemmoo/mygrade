@@ -1,9 +1,20 @@
 ﻿@page "/"
+@using Core.Model
 @using Web.Components.Forms
 
 <MudContainer MaxWidth="MaxWidth.Large" Style="height: 80vh; display: flex; justify-content: center;">
     <MudStack Spacing="0" AlignItems="AlignItems.Center" Style="width:100%">
         <MudText Typo="Typo.h2" >Welcome to MyGrade!</MudText>
-        <FileUploadForm />
+        <FileUploadForm ParsedClassGrades="HandleParsedClassGradeResultFromPdf"/>
     </MudStack>
 </MudContainer>
+
+@code
+{
+    List<ClassGrade> parsedClassGradeResult = [];
+
+    private void HandleParsedClassGradeResultFromPdf(List<ClassGrade> classGrades)
+    {
+        parsedClassGradeResult = classGrades;
+    }
+}

@@ -14,14 +14,16 @@ public class PdfParserTests
     [Fact]
     public void ClassGradesShouldNotBeNull()
     {
-        var classGrades = _pdfParser.GetClassGradeFromPdf(@"C:\Users\Oliver\Downloads\Grades.pdf");
+        var fileStream = new FileStream(@"C:\Users\Oliver\Downloads\Grades.pdf", FileMode.Open, FileAccess.Read);
+        var classGrades = _pdfParser.GetClassGradeFromPdf(fileStream);
         Assert.NotNull(classGrades);
     }
 
     [Fact]
     public void WeightedAverageShouldBeCorrect()
     {
-        var classGrades = _pdfParser.GetClassGradeFromPdf(@"C:\Users\Oliver\Downloads\Grades.pdf");
+        var fileStream = new FileStream(@"C:\Users\Oliver\Downloads\Grades.pdf", FileMode.Open, FileAccess.Read);
+        var classGrades = _pdfParser.GetClassGradeFromPdf(fileStream);
         var average = _pdfParser.GetWeightedResult(classGrades);
 
         Assert.InRange(average, 0,13);
