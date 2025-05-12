@@ -1,22 +1,76 @@
 ﻿@page "/"
+@using Core
 @using Core.Model
 @using Web.Components.Forms
+@inject PdfParser PdfParser
+@inject ISnackbar Snackbar
 
 <MudContainer MaxWidth="MaxWidth.Large" Style="height: 80vh; display: flex; justify-content: center;">
-    <MudStack Spacing="0" AlignItems="AlignItems.Center" Style="width:100%">
-        <MudText Typo="Typo.h2" >Welcome to MyGrade!</MudText>
-        <FileUploadForm ParsedClassGrades="HandleParsedClassGradeResultFromPdf"/>
+    <MudStack Spacing="4" AlignItems="AlignItems.Center" Style="width:100%">
+        @if (_gradeAverage != 0.0m)
+        {
+            <MudText Typo="Typo.h2">Your grade average is:</MudText>
+            <MudText Typo="Typo.h3">@_gradeAverage</MudText>
+        }
+        @if (_gradeAverage == 0.0m)
+        {
+            
+            if (_manualMode)
+            {
+                <ManualEntryForm/>
+            }
+            else
+            {
+                <MudText Typo="Typo.h2">Welcome to MyGrade!</MudText>
+                <FileUploadForm BrowserFile="HandleBrowserFileFromUploadForm"/>
+            }
+            <MudButton OnClick="HandleManualModeButtonClick"
+                       Size="Size.Large"
+                       IconSize="Size.Large"
+                       Variant="Variant.Outlined"
+                       EndIcon="@_icon">
+                Manual Mode
+            </MudButton>
+        }
     </MudStack>
 </MudContainer>
 
 @code
 {
     private bool _manualMode = false;
-    private List<ClassGrade> _parsedClassGradeResult = [];
+    private Stream? _fileStream;
+    private PdfParser? _pdfParser;
+    private decimal _gradeAverage;
+    private string _icon;
 
-    private void HandleParsedClassGradeResultFromPdf(List<ClassGrade> classGrades)
+    protected override void OnInitialized()
     {
-        _parsedClassGradeResult = classGrades;
+        _pdfParser = new PdfParser();
+        _icon = @Icons.Material.Filled.ToggleOff;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
     }
-    
+
+    private async Task HandleBrowserFileFromUploadForm(IBrowserFile browserFile)
+    {
+            _fileStream = browserFile.OpenReadStream(maxAllowedSize: 10_000_000);
+             _gradeAverage = await GetWeightedAverageFromUploadedPdf(_fileStream);
+    }
+
+    private void HandleManualModeButtonClick()
+    {
+        _manualMode = !_manualMode;
+        if(_manualMode) _icon = @Icons.Material.Filled.ToggleOn;
+        if(!_manualMode) _icon = @Icons.Material.Filled.ToggleOff;
+    }
+
+    private async Task<decimal> GetWeightedAverageFromUploadedPdf(Stream gradesFileStream)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            await gradesFileStream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+            if (_pdfParser != null) return _pdfParser.GetWeightedResult(memoryStream);
+            return 0.0m;
+        }
+    }
 }

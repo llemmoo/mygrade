@@ -23,8 +23,7 @@ public class PdfParserTests
     public void WeightedAverageShouldBeCorrect()
     {
         var fileStream = new FileStream(@"C:\Users\Oliver\Downloads\Grades.pdf", FileMode.Open, FileAccess.Read);
-        var classGrades = _pdfParser.GetClassGradeFromPdf(fileStream);
-        var average = _pdfParser.GetWeightedResult(classGrades);
+        var average = _pdfParser.GetWeightedResult(fileStream);
 
         Assert.InRange(average, 0,13);
     }

@@ -1,9 +1,5 @@
-@using Core
 @using Core.Model
-@@using Core.Model
-using Core
 @inject ISnackbar Snackbar
-@inject PdfParser PdfParser
 @namespace Web.Components.Forms
 
 
@@ -38,16 +34,14 @@ using Core
 #nullable enable
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 ";
     private string _dragClass = DefaultDragClass;
-    private PdfParser _pdfParser;
     private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
 
     [Parameter]
-    public EventCallback<List<ClassGrade>> ParsedClassGrades { get; set; }
+    public EventCallback<IBrowserFile> BrowserFile { get; set; }
     
     protected override void OnInitialized()
     {
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        _pdfParser = PdfParser;
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
     }
     
     private async Task OnInputFileChanged(InputFileChangeEventArgs e)
@@ -55,21 +49,14 @@ using Core
         try
         {
             ClearDragClass();
-            var parsedClassGrades = ProcessGradeFile(e.File);
-            await ParsedClassGrades.InvokeAsync(parsedClassGrades);
-            Snackbar.Add("Grades processed");
+            await BrowserFile.InvokeAsync(e.File);
+            Snackbar.Add("Grades processed", Severity.Success);
         }
         catch (Exception ex)
         {
             Snackbar.Add("Error while processing grades " + ex.Message, Severity.Error);
             throw;
         }
-    }
-
-    private List<ClassGrade> ProcessGradeFile(IBrowserFile browserFile)
-    {
-        using var stream = browserFile.OpenReadStream(maxAllowedSize: 10_000_000);
-        return  _pdfParser.GetClassGradeFromPdf(stream);
     }
 
     private void SetDragClass()

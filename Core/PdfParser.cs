@@ -128,8 +128,11 @@ public class PdfParser
         }
     }
     
-    public decimal GetWeightedResult(List<ClassGrade> classGrades)
+    public decimal GetWeightedResult(Stream fileStream)
     {
+        // Get class grades from file stream
+        var classGrades = GetClassGradeFromPdf(fileStream);
+        
         //Calculate weighted grades
         var gradeSum = classGrades.Sum(cg => cg.Grade * cg.Weight);
         var creditSum = (decimal)classGrades.Sum(cg => cg.Weight);
